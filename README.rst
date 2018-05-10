@@ -1,6 +1,8 @@
 Docker
 ======
 
+|galaxy|
+
 Ansible role to install and configure Docker container engine on RHEL/CentOS 7.
 
 **Main features:**
@@ -20,6 +22,10 @@ Ansible role to install and configure Docker container engine on RHEL/CentOS 7.
 - Automatically applying changes to the Docker storage configuration for an
   existing system is not supported. You will have to manually remove the
   contents of the ``/var/lib/docker`` directory and then run the role again.
+
+.. |galaxy| image:: https://img.shields.io/ansible/role/25555.svg
+    :target: https://galaxy.ansible.com/tjanez/docker/
+    :alt: Ansible Role
 
 .. _on a loopback device by default:
   https://www.projectatomic.io/blog/2015/06/notes-on-fedora-centos-and-docker-storage-drivers/
