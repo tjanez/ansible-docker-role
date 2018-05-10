@@ -1,0 +1,87 @@
+---
+- import_tasks: sanity_checks.yml
+
+- name: Install Docker and related packages
+  package:
+    name:
+      - docker
+      # NOTE: docker-py is required by docker_{login,image} Ansible modules.
+      - python-docker-py
+
+- name: Configure Docker storage
+  template:
+    src: etc-sysconfig-docker-storage-setup.j2
+    dest: /etc/sysconfig/docker-storage-setup
+  register: docker_storage_setup_res
+
+- name: Check if Docker storage's directory has been initialized already
+  command: ls --almost-all /var/lib/docker
+  register: docker_storage_dir_res
+  changed_when: false
+
+- name: Fail if Docker storage configuration changed an existing system
+  fail:
+    msg: |
+      The role detected that you've changed the Docker storage
+      configuration for an existing system.
+      This is not supported by the role and you will have to manually
+      remove the contents of the /var/lib/docker directory and re-run
+      the role again.
+  when: docker_storage_setup_res.changed and docker_storage_dir_res.stdout != ""
+
+- name: Run Docker storage setup and ensure its prerequisites are met
+  block:
+    - name: Stop Docker service
+      service:
+        name: docker
+        state: stopped
+
+    - name: Run Docker storage setup
+      service:
+        name: docker-storage-setup
+        state: started
+
+  when: docker_storage_setup_res.changed or docker_storage_dir_res.stdout == ""
+
+- name: Enable and start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Set up convenient passwordless sudo access for running Docker
+  block:
+    - name: Set up passwordless sudo access for selected users
+      template:
+        src: etc-sudoers.d-docker
+        dest: /etc/sudoers.d/99-docker
+        validate: visudo -cf %s
+
+    - name: Set up convenience alias for running Docker
+      template:
+        src: etc-profile.d-docker.sh
+        dest: /etc/profile.d/custom-docker.sh
+
+    - name: Test that convenience alias for running Docker works
+      # NOTE: We need to wrap the shell command in a "/bin/bash -i -c" call
+      # since Ansible chooses not to support invoking an interactive shell (-i)
+      # which we need to test the aliases in /etc/profile.d/docker.sh.
+      # More information: https://github.com/ansible/ansible/issues/4854.
+      shell: /bin/bash -i -c 'docker info' >/dev/null
+      become: true
+      become_user: "{{ item }}"
+      with_items: "{{ docker_sudo_users }}"
+      changed_when: false
+
+  when: docker_sudo_users | length > 0
+
+- name: Authenticate with private Docker registries
+  docker_login:
+    registry_url: "{{ item.registry_url | default(omit) }}"
+    username: "{{ item.username }}"
+    password: "{{ item.password }}"
+    email: "{{ item.email | default(omit) }}"
+  with_items: "{{ docker_private_registries }}"
+  # Prevent exposing private registries' passwords.
+  no_log: true
+  when: docker_private_registries is defined

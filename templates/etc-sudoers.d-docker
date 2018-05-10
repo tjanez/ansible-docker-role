@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+#
+# Configure passwordless running of Docker for selected users.
+#
+
+# Docker operators
+User_Alias DOCKEROPS = {{ docker_sudo_users | join(', ') }}
+
+# Docker commands
+# NOTE: RHEL/CentOS 7.2+ supports multiple Docker versions installed
+# simultaneously and implements redirection between different Docker
+# executables.
+Cmnd_Alias DOCKER = /usr/bin/docker, /usr/bin/docker-current
+
+DOCKEROPS ALL = NOPASSWD: DOCKER

@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+#
+# Configuration for container-storage-setup tool.
+#
+# To see available configuration options and their defaults, look at:
+# /usr/share/container-storage-setup/container-storage-setup.
+#
+# For more details, refer to "man container-storage-setup"
+#
+
+STORAGE_DRIVER={{ docker_storage_driver }}
+{% if docker_storage_driver != "" %}
+{% if docker_storage_volumegroup is defined %}
+
+VG={{ docker_storage_volumegroup }}
+
+{% if docker_storage_driver == "overlay2" %}
+CONTAINER_ROOT_LV_NAME=dockerlv
+CONTAINER_ROOT_LV_SIZE=100%FREE
+CONTAINER_ROOT_LV_MOUNT_PATH=/var/lib/docker
+{% endif %}
+{% if docker_storage_driver == "devicemapper" %}
+CONTAINER_THINPOOL=dockerpool
+DATA_SIZE=100%FREE
+{% endif %}
+{% endif %}
+{% endif %}

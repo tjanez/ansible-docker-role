@@ -1,0 +1,22 @@
+galaxy_info:
+  author: Tadej Janež
+  description: >
+    Role to install and configure Docker container engine on RHEL/CentOS 7.
+
+  license: GPLv3
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+
+  galaxy_tags:
+    - system
+    - centos
+    - rhel
+    - docker
+    - container
+
+dependencies: []

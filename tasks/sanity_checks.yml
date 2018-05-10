@@ -1,0 +1,40 @@
+---
+- name: Check that the system has CentOS 7.4+ or RHEL 7.4+ installed
+  assert:
+    that:
+      - ansible_distribution in ["CentOS", "RedHat"]
+      - ansible_distribution_version | version_compare('7.4', '>=')
+
+- name: Sanity check of docker_storage_driver variable
+  assert:
+    that:
+      - docker_storage_driver in ["overlay2", "devicemapper", ""]
+
+- name: Ensure appropriate variables are defined when using devicemapper
+  assert:
+    that:
+      - docker_storage_volumegroup is defined
+  when: docker_storage_driver == "devicemapper"
+
+  # For more details why this is necessary, see:
+  # https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/7/html/7.5_release_notes/technology_previews_file_systems
+- name: Ensure XFS with appropriate options is used with overlay2 on rootfs
+  shell: >
+    xfs_info / | grep 'ftype=1'
+  changed_when: false
+  when:
+    - docker_storage_driver == "overlay2"
+    - docker_storage_volumegroup is not defined
+
+- name: Sanity check of docker_private_registries variable
+  assert:
+    that:
+      - "'username' in item"
+      - "'password' in item"
+  with_items: "{{ docker_private_registries }}"
+  # Prevent exposing private registries' passwords.
+  # NOTE: Unfortunately, here we need to make a tradeoff between security and
+  # convenience. Using 'no_log: true' prevents exposing private registries'
+  # passwords but it makes it hard to see why the task is failing.
+  no_log: true
+  when: docker_private_registries is defined
