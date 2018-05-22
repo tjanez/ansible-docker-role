@@ -63,11 +63,15 @@
         dest: /etc/profile.d/custom-docker.sh
 
     - name: Test that convenience alias for running Docker works
-      # NOTE: We need to wrap the shell command in a "/bin/bash -i -c" call
-      # since Ansible chooses not to support invoking an interactive shell (-i)
-      # which we need to test the aliases in /etc/profile.d/docker.sh.
+      # NOTE: Shell aliases are only expanded when the shell is interactive.
+      # Furthermore, the contents of /etc/profile.d/ is not always sourced for
+      # non-login shells (e.g. for system users that don't have their ~/.bashrc
+      # set up), so we need to use a login shell.
+      # NOTE: We need to wrap the shell command in a "/bin/bash -i -l -c " call
+      # since Ansible chooses not to support invoking a shell with custom
+      # options.
       # More information: https://github.com/ansible/ansible/issues/4854.
-      shell: /bin/bash -i -c 'docker info' >/dev/null
+      shell: /bin/bash -i -l -c 'docker info' >/dev/null
       become: true
       become_user: "{{ item }}"
       with_items: "{{ docker_sudo_users }}"
