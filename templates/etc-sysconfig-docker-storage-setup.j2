@@ -10,7 +10,7 @@
 
 STORAGE_DRIVER={{ docker_storage_driver }}
 {% if docker_storage_driver != "" %}
-{% if docker_storage_volumegroup is defined %}
+{% if docker_storage_volumegroup != "" %}
 
 VG={{ docker_storage_volumegroup }}
 

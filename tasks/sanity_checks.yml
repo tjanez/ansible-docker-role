@@ -10,10 +10,10 @@
     that:
       - docker_storage_driver in ["overlay2", "devicemapper", ""]
 
-- name: Ensure appropriate variables are defined when using devicemapper
+- name: Ensure variables have appropriate values when using devicemapper
   assert:
     that:
-      - docker_storage_volumegroup is defined
+      - docker_storage_volumegroup != ""
   when: docker_storage_driver == "devicemapper"
 
   # For more details why this is necessary, see:
@@ -24,7 +24,7 @@
   changed_when: false
   when:
     - docker_storage_driver == "overlay2"
-    - docker_storage_volumegroup is not defined
+    - docker_storage_volumegroup != ""
 
 - name: Sanity check of docker_private_registries variable
   assert:

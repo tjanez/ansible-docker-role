@@ -50,12 +50,6 @@ Variables that can be set:
 +--------------------------------+---------+-------------------------------------------+
 |                Name            |  Type   |                Description                |
 +================================+=========+===========================================+
-| ``docker_storage_volumegroup`` | string  | Name of the LVM volume group to use for   |
-|                                |         | Docker storage.                           |
-|                                |         |                                           |
-|                                |         | *NOTE:* This variable must be set if the  |
-|                                |         | ``docker_storage_driver`` variable is set |
-|                                |         | to ``devicemapper``.                      |
 +--------------------------------+---------+-------------------------------------------+
 | ``docker_private_registries``  | list    | List of private Docker registries with    |
 |                                |         | which to authenticate the current system  |
@@ -100,6 +94,18 @@ Variables in ``defaults/main.yml``:
 |                                |         | *NOTE:* The ``overlay`` storage driver is |                             |
 |                                |         | omitted since ``overlay2`` is more        |                             |
 |                                |         | performant.                               |                             |
++--------------------------------+---------+-------------------------------------------+-----------------------------+
+| ``docker_storage_volumegroup`` | string  | Name of the LVM volume group to use for   | ``""``                      |
+|                                |         | Docker storage.                           |                             |
+|                                |         |                                           |                             |
+|                                |         | *NOTE:* If the value is ``""``, the role  |                             |
+|                                |         | will not configure Docker storage's       |                             |
+|                                |         | volume group.                             |                             |
+|                                |         |                                           |                             |
+|                                |         | *NOTE:* This variable must be changed     |                             |
+|                                |         | from the default value if the             |                             |
+|                                |         | ``docker_storage_driver`` variable is set |                             |
+|                                |         | to ``devicemapper``.                      |                             |
 +--------------------------------+---------+-------------------------------------------+-----------------------------+
 | ``docker_sudo_users``          | list    | List of users for which to configure      | ``[]``                      |
 |                                |         | passwordless sudo access for running      |                             |
