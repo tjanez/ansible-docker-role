@@ -4,7 +4,7 @@
 #
 
 # Docker operators
-User_Alias DOCKEROPS = {{ docker_sudo_users | join(', ') }}
+User_Alias DOCKEROPS = {{ docker_sudo_users | map(attribute='name') | join(', ') }}
 
 # Docker commands
 # NOTE: RHEL/CentOS 7.2+ supports multiple Docker versions installed

@@ -26,6 +26,12 @@
     - docker_storage_driver == "overlay2"
     - docker_storage_volumegroup != ""
 
+- name: Sanity check of docker_sudo_users variable
+  assert:
+    that:
+      - "'name' in item"
+  with_items: "{{ docker_sudo_users }}"
+
 - name: Sanity check of docker_private_registries variable
   assert:
     that:

@@ -73,8 +73,9 @@
       # More information: https://github.com/ansible/ansible/issues/4854.
       shell: /bin/bash -i -l -c 'docker info' >/dev/null
       become: true
-      become_user: "{{ item }}"
+      become_user: "{{ item.name }}"
       with_items: "{{ docker_sudo_users }}"
+      when: item.test | default(true)
       changed_when: false
 
   when: docker_sudo_users | length > 0

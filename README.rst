@@ -109,7 +109,17 @@ Variables in ``defaults/main.yml``:
 +--------------------------------+---------+-------------------------------------------+-----------------------------+
 | ``docker_sudo_users``          | list    | List of users for which to configure      | ``[]``                      |
 |                                |         | passwordless sudo access for running      |                             |
-|                                |         | Docker.                                   |                             |
+|                                |         | Docker of the form:                       |                             |
+|                                |         |                                           |                             |
+|                                |         | .. code-block:: yaml                      |                             |
+|                                |         |                                           |                             |
+|                                |         |     name: string                          |                             |
+|                                |         |     test (optional): boolean              |                             |
+|                                |         |                                           |                             |
+|                                |         | where ``name`` represents user's name and |                             |
+|                                |         | ``test`` indicates whether to test that   |                             |
+|                                |         | convenience alias for running Docker      |                             |
+|                                |         | works (defaults to ``true``).             |                             |
 +--------------------------------+---------+-------------------------------------------+-----------------------------+
 
 
