@@ -1,4 +1,5 @@
 ---
 docker_storage_driver: overlay2
+docker_storage_volumegroup: ""
 
 docker_sudo_users: []
