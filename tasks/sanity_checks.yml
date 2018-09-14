@@ -24,7 +24,7 @@
   changed_when: false
   when:
     - docker_storage_driver == "overlay2"
-    - docker_storage_volumegroup != ""
+    - docker_storage_volumegroup == ""
 
 - name: Sanity check of docker_sudo_users variable
   assert:
