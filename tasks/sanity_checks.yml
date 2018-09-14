@@ -43,4 +43,4 @@
   # convenience. Using 'no_log: true' prevents exposing private registries'
   # passwords but it makes it hard to see why the task is failing.
   no_log: true
-  when: docker_private_registries is defined
+  when: docker_private_registries | length > 0

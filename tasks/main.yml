@@ -89,4 +89,4 @@
   with_items: "{{ docker_private_registries }}"
   # Prevent exposing private registries' passwords.
   no_log: true
-  when: docker_private_registries is defined
+  when: docker_private_registries | length > 0
