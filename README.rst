@@ -32,6 +32,7 @@ Ansible role to install and configure Docker container engine on RHEL/CentOS 7.
 .. _as recommended by Dan Walsh:
   http://www.projectatomic.io/blog/2015/08/why-we-dont-let-non-root-users-run-docker-in-centos-fedora-or-rhel/
 
+
 Requirements
 ------------
 
@@ -151,10 +152,12 @@ License
 
 GPLv3
 
+
 Author Information
 ------------------
 
 Tadej Janež
+
 
 Acknowledgement
 ---------------
