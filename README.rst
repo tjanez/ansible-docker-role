@@ -47,80 +47,80 @@ Role Variables
 Variables that can be set:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+--------------------------------+---------+-------------------------------------------+
-|                Name            |  Type   |                Description                |
-+================================+=========+===========================================+
-+--------------------------------+---------+-------------------------------------------+
-| ``docker_private_registries``  | list    | List of private Docker registries with    |
-|                                |         | which to authenticate the current system  |
-|                                |         | user of the form:                         |
-|                                |         |                                           |
-|                                |         | .. code-block:: yaml                      |
-|                                |         |                                           |
-|                                |         |    registry_url: string                   |
-|                                |         |    username: string                       |
-|                                |         |    password: string                       |
-|                                |         |    email: string                          |
-|                                |         |                                           |
-|                                |         | where ``registry_url`` (optional)         |
-|                                |         | represents registry's URL, ``username``   |
-|                                |         | represents user name with which to        |
-|                                |         | authenticate with the registry,           |
-|                                |         | ``password`` represents the user's        |
-|                                |         | password and ``email`` (optional)         |
-|                                |         | represents the user's email address.      |
-|                                |         |                                           |
-|                                |         | *NOTE:* ``email`` is required when        |
-|                                |         | authenticating with `Docker Hub`_.        |
-+--------------------------------+---------+-------------------------------------------+
++-----------------------------------------+---------+---------------------------------------------+
+|                Name                     |  Type   |                Description                  |
++=========================================+=========+=============================================+
++-----------------------------------------+---------+---------------------------------------------+
+| ``docker_private_registries``           | list    | List of private Docker registries with      |
+|                                         |         | which to authenticate the current system    |
+|                                         |         | user of the form:                           |
+|                                         |         |                                             |
+|                                         |         | .. code-block:: yaml                        |
+|                                         |         |                                             |
+|                                         |         |    registry_url: string                     |
+|                                         |         |    username: string                         |
+|                                         |         |    password: string                         |
+|                                         |         |    email: string                            |
+|                                         |         |                                             |
+|                                         |         | where ``registry_url`` (optional)           |
+|                                         |         | represents registry's URL, ``username``     |
+|                                         |         | represents user name with which to          |
+|                                         |         | authenticate with the registry,             |
+|                                         |         | ``password`` represents the user's          |
+|                                         |         | password and ``email`` (optional)           |
+|                                         |         | represents the user's email address.        |
+|                                         |         |                                             |
+|                                         |         | *NOTE:* ``email`` is required when          |
+|                                         |         | authenticating with `Docker Hub`_.          |
++-----------------------------------------+---------+---------------------------------------------+
 
 .. _Docker Hub: https://hub.docker.com/
 
 Variables in ``defaults/main.yml``:
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+--------------------------------+---------+-------------------------------------------+-----------------------------+
-|                Name            |  Type   |                Description                |           Default           |
-+================================+=========+===========================================+=============================+
-| ``docker_storage_driver``      | string  | Storage driver to be used with Docker.    | ``overlay2``                |
-|                                |         | It can be one of the following:           |                             |
-|                                |         |                                           |                             |
-|                                |         | * ``overlay2``: Use OverlayFS.            |                             |
-|                                |         | * ``devicemapper``: Use Device Mapper     |                             |
-|                                |         |   kernel framework.                       |                             |
-|                                |         | * ``""``: Don't do any storage setup with |                             |
-|                                |         |   docker-storage-setup.                   |                             |
-|                                |         |                                           |                             |
-|                                |         | *NOTE:* The ``overlay`` storage driver is |                             |
-|                                |         | omitted since ``overlay2`` is more        |                             |
-|                                |         | performant.                               |                             |
-+--------------------------------+---------+-------------------------------------------+-----------------------------+
-| ``docker_storage_volumegroup`` | string  | Name of the LVM volume group to use for   | ``""``                      |
-|                                |         | Docker storage.                           |                             |
-|                                |         |                                           |                             |
-|                                |         | *NOTE:* If the value is ``""``, the role  |                             |
-|                                |         | will not configure Docker storage's       |                             |
-|                                |         | volume group.                             |                             |
-|                                |         |                                           |                             |
-|                                |         | *NOTE:* This variable must be changed     |                             |
-|                                |         | from the default value if the             |                             |
-|                                |         | ``docker_storage_driver`` variable is set |                             |
-|                                |         | to ``devicemapper``.                      |                             |
-+--------------------------------+---------+-------------------------------------------+-----------------------------+
-| ``docker_sudo_users``          | list    | List of users for which to configure      | ``[]``                      |
-|                                |         | passwordless sudo access for running      |                             |
-|                                |         | Docker of the form:                       |                             |
-|                                |         |                                           |                             |
-|                                |         | .. code-block:: yaml                      |                             |
-|                                |         |                                           |                             |
-|                                |         |     name: string                          |                             |
-|                                |         |     test (optional): boolean              |                             |
-|                                |         |                                           |                             |
-|                                |         | where ``name`` represents user's name and |                             |
-|                                |         | ``test`` indicates whether to test that   |                             |
-|                                |         | convenience alias for running Docker      |                             |
-|                                |         | works (defaults to ``true``).             |                             |
-+--------------------------------+---------+-------------------------------------------+-----------------------------+
++-----------------------------------------+---------+---------------------------------------------+
+|                Name                     |  Type   |                Description                  |
++=========================================+=========+=============================================+
+| ``docker_storage_driver``               | string  | Storage driver to be used with Docker. It   |
+|                                         |         | can be one of the following:                |
+|                                         |         |                                             |
+|                                         |         | * ``overlay2``: Use OverlayFS.              |
+|                                         |         | * ``devicemapper``: Use Device Mapper       |
+|                                         |         |   kernel framework.                         |
+|                                         |         | * ``""``: Don't do any storage setup with   |
+|                                         |         |   docker-storage-setup.                     |
+|                                         |         |                                             |
+|                                         |         | *NOTE:* The ``overlay`` storage driver is   |
+|                                         |         | omitted since ``overlay2`` is more          |
+|                                         |         | performant.                                 |
++-----------------------------------------+---------+---------------------------------------------+
+| ``docker_storage_volumegroup``          | string  | Name of the LVM volume group to use for     |
+|                                         |         | Docker storage.                             |
+|                                         |         |                                             |
+|                                         |         | *NOTE:* If the value is ``""``, the role    |
+|                                         |         | will not configure Docker storage's         |
+|                                         |         | volume group.                               |
+|                                         |         |                                             |
+|                                         |         | *NOTE:* This variable must be changed       |
+|                                         |         | from the default value if the               |
+|                                         |         | ``docker_storage_driver`` variable is set   |
+|                                         |         | to ``devicemapper``.                        |
++-----------------------------------------+---------+---------------------------------------------+
+| ``docker_sudo_users``                   | list    | List of users for which to configure        |
+|                                         |         | passwordless sudo access for running        |
+|                                         |         | Docker of the form:                         |
+|                                         |         |                                             |
+|                                         |         | .. code-block:: yaml                        |
+|                                         |         |                                             |
+|                                         |         |     name: string                            |
+|                                         |         |     test (optional): boolean                |
+|                                         |         |                                             |
+|                                         |         | where ``name`` represents user's name and   |
+|                                         |         | ``test`` indicates whether to test that     |
+|                                         |         | convenience alias for running Docker        |
+|                                         |         | works (defaults to ``true``).               |
++-----------------------------------------+---------+---------------------------------------------+
 
 
 Dependencies
