@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: docker
   author: Tadej Janež
   description: >
     Role to install and configure Docker container engine on RHEL/CentOS 7.
