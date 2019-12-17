@@ -3,7 +3,7 @@
   assert:
     that:
       - ansible_distribution in ["CentOS", "RedHat"]
-      - ansible_distribution_version | version_compare('7.4', '>=')
+      - ansible_distribution_version is version('7.4', '>=')
 
 - name: Sanity check of docker_storage_driver variable
   assert:
